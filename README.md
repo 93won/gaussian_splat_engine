@@ -19,11 +19,12 @@ A complete, from-scratch implementation of Gaussian Splatting for real-time rend
 
 Currently implementing:
 - [x] Project structure
-- [ ] PLY file loader
+- [x] PLY file loader
+- [x] Visualization (1) (3D Color Points only)
 - [ ] CUDA rasterizer (forward pass)
+- [ ] Visualization (2) (Rendering)
 - [ ] Training pipeline (backward pass)
 - [ ] Optimization algorithms (Adam, SGD)
-- [ ] Python bindings
 
 ## Architecture
 
