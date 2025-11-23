@@ -10,8 +10,8 @@ A complete, from-scratch implementation of Gaussian Splatting for real-time rend
 
 - **CUDA-accelerated Rasterization** - Tile-based rendering for real-time performance
 - **Modern C++ Design** - Clean architecture with C++17 features
-- **Pangolin Viewer** - Interactive 3D visualization
-- **Training Pipeline** - Full forward/backward implementation (coming soon)
+- **Python Bindings** - Easy-to-use Python API with pybind11
+- **Training Pipeline** - Full forward/backward implementation with optimization
 
 ## Project Status
 
@@ -21,9 +21,33 @@ Currently implementing:
 - [x] Project structure
 - [ ] PLY file loader
 - [ ] CUDA rasterizer (forward pass)
-- [ ] Pangolin viewer
-- [ ] Training pipeline
-- [ ] Optimization algorithms
+- [ ] Training pipeline (backward pass)
+- [ ] Optimization algorithms (Adam, SGD)
+- [ ] Python bindings
+
+## Architecture
+
+Pure rendering and training engine
+
+```
+gaussian_splat_engine/
+├── src/                    # C++ Core Engine
+│   ├── database/           # Gaussian data structures
+│   ├── rendering/          # Forward pass (CUDA)
+│   ├── training/           # Backward pass (CUDA)
+│   ├── optimization/       # Optimizers (Adam, SGD)
+│   └── util/               # PLY loader, helpers
+│
+├── python/                 # Python Bindings
+│   ├── gs_engine/          # Python package
+│   └── examples/           # Python examples
+```
+
+**Design Philosophy:**
+- Core engine in C++/CUDA for performance
+- Python bindings for easy prototyping
+- Modular architecture for flexibility
+- Minimal dependencies
 
 ## Build Requirements
 
@@ -31,15 +55,8 @@ Currently implementing:
 - CMake 3.18+
 - C++17 compiler (GCC 9+, Clang 10+)
 - Eigen3
-- Pangolin
-- OpenGL
-
-## Quick Start
-
-```bash
-# Clone repository
-git clone git@github.com:93won/gaussian_splat_engine.git
-cd gaussian_splat_engine
+- pybind11 (for Python bindings)
+- Python 3.8+ (optional, for Python API)
 
 
 ⚡ Built with performance in mind | 🎨 Designed for clarity | 🚀 Optimized with CUDA
