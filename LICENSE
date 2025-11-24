@@ -1,0 +1,53 @@
+Research Use License
+=====================
+
+This software is for RESEARCH AND EDUCATIONAL PURPOSES ONLY.
+
+Parts of this implementation are based on algorithms from:
+
+"3D Gaussian Splatting for Real-Time Radiance Field Rendering"
+Bernhard Kerbl, Georgios Kopanas, Thomas Leimkühler, George Drettakis
+ACM Transactions on Graphics, 2023
+
+Original CUDA implementation:
+https://github.com/graphdeco-inria/diff-gaussian-rasterization
+
+The original work is licensed under the Inria/MPII Research License
+(Non-commercial use only).
+
+---
+
+## Terms
+
+1. **Non-Commercial Use Only**
+   This software may only be used for research and educational purposes.
+   Commercial use requires explicit permission from the original authors
+   (Inria and Max Planck Institut for Informatik).
+
+2. **Attribution**
+   If you use this software in your research, you must cite the original work:
+   
+   @Article{kerbl3Dgaussians,
+         author       = {Kerbl, Bernhard and Kopanas, Georgios and 
+                         Leimk{\"u}hler, Thomas and Drettakis, George},
+         title        = {3D Gaussian Splatting for Real-Time Radiance Field Rendering},
+         journal      = {ACM Transactions on Graphics},
+         number       = {4},
+         volume       = {42},
+         year         = {2023},
+   }
+
+3. **Redistribution**
+   Redistribution of this software must include this license and all
+   copyright notices.
+
+4. **No Warranty**
+   This software is provided "AS IS" without warranty of any kind.
+
+---
+
+For commercial licensing inquiries, contact:
+stip-sophia.transfert@inria.fr
+
+This implementation: Copyright (c) 2025 Seungwon Choi
+Original algorithms: Copyright (c) 2023 Inria and MPII

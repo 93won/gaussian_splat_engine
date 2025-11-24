@@ -2,6 +2,7 @@
 build/
 bin/
 lib/
+sample_data/
 
 # CMake
 CMakeCache.txt

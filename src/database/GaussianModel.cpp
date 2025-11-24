@@ -4,6 +4,7 @@
  * @author    Seungwon Choi
  * @email     csw3575@snu.ac.kr
  * @date      2025-11-23
+ * 
  */
 
 #include "GaussianModel.h"

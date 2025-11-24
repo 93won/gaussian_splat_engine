@@ -55,13 +55,16 @@ bool LoadGaussians(const std::string& ply_path, std::vector<Gaussian>& gaussians
     }
     
     // Read binary data
-    // PLY format from MonoGS: x, y, z, nx, ny, nz, f_dc_0, f_dc_1, f_dc_2,
-    //                         opacity, scale_0, scale_1, scale_2, 
-    //                         rot_0, rot_1, rot_2, rot_3
+    // PLY format from 3DGS: x, y, z, nx, ny, nz, 
+    //                       f_dc_0, f_dc_1, f_dc_2 (DC - 3 floats)
+    //                       f_rest_0 ~ f_rest_44 (SH degree 1-3, 45 floats)
+    //                       opacity, scale_0, scale_1, scale_2, 
+    //                       rot_0, rot_1, rot_2, rot_3
     struct PLYGaussian {
         float x, y, z;              // position (3)
         float nx, ny, nz;           // normal (3) - not used
         float f_dc_0, f_dc_1, f_dc_2;  // SH DC component (3)
+        float f_rest[45];           // SH rest components (45) - we skip these for now
         float opacity;              // opacity (1)
         float scale_0, scale_1, scale_2;  // scale (3)
         float rot_0, rot_1, rot_2, rot_3;  // quaternion (4) - format: w, x, y, z
@@ -80,7 +83,13 @@ bool LoadGaussians(const std::string& ply_path, std::vector<Gaussian>& gaussians
         
         Gaussian gaussian;
         gaussian.position = Eigen::Vector3f(ply_gaussian.x, ply_gaussian.y, ply_gaussian.z);
-        gaussian.color_dc = Eigen::Vector3f(ply_gaussian.f_dc_0, ply_gaussian.f_dc_1, ply_gaussian.f_dc_2);
+        gaussian.sh_dc = Eigen::Vector3f(ply_gaussian.f_dc_0, ply_gaussian.f_dc_1, ply_gaussian.f_dc_2);
+        
+        // Copy all 45 SH rest coefficients
+        for (int j = 0; j < 45; ++j) {
+            gaussian.sh_rest[j] = ply_gaussian.f_rest[j];
+        }
+        
         gaussian.opacity = ply_gaussian.opacity;
         gaussian.scale = Eigen::Vector3f(ply_gaussian.scale_0, ply_gaussian.scale_1, ply_gaussian.scale_2);
         
@@ -130,6 +139,10 @@ bool SaveGaussians(const std::string& ply_path, const std::vector<Gaussian>& gau
     file << "property float f_dc_0\n";
     file << "property float f_dc_1\n";
     file << "property float f_dc_2\n";
+    // Write f_rest headers (45 coefficients for SH degree 3)
+    for (int i = 0; i < 45; ++i) {
+        file << "property float f_rest_" << i << "\n";
+    }
     file << "property float opacity\n";
     file << "property float scale_0\n";
     file << "property float scale_1\n";
@@ -145,6 +158,7 @@ bool SaveGaussians(const std::string& ply_path, const std::vector<Gaussian>& gau
         float x, y, z;
         float nx, ny, nz;
         float f_dc_0, f_dc_1, f_dc_2;
+        float f_rest[45];  // SH rest - set to zero for now
         float opacity;
         float scale_0, scale_1, scale_2;
         float rot_0, rot_1, rot_2, rot_3;
@@ -162,9 +176,14 @@ bool SaveGaussians(const std::string& ply_path, const std::vector<Gaussian>& gau
         ply_gaussian.ny = 0.0f;
         ply_gaussian.nz = 0.0f;
         
-        ply_gaussian.f_dc_0 = gaussian.color_dc.x();
-        ply_gaussian.f_dc_1 = gaussian.color_dc.y();
-        ply_gaussian.f_dc_2 = gaussian.color_dc.z();
+        ply_gaussian.f_dc_0 = gaussian.sh_dc.x();
+        ply_gaussian.f_dc_1 = gaussian.sh_dc.y();
+        ply_gaussian.f_dc_2 = gaussian.sh_dc.z();
+        
+        // Copy all 45 SH rest coefficients
+        for (int j = 0; j < 45; ++j) {
+            ply_gaussian.f_rest[j] = gaussian.sh_rest[j];
+        }
         
         ply_gaussian.opacity = gaussian.opacity;
         
